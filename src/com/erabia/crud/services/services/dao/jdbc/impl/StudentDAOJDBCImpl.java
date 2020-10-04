@@ -54,7 +54,6 @@ public class StudentDAOJDBCImpl implements StudentDAO {
 			statment.close();
 			connection.close();
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
@@ -79,28 +78,30 @@ public class StudentDAOJDBCImpl implements StudentDAO {
 	@Override
 	public void addStudent(Student student) throws IOException, ClassNotFoundException, SQLException {
 		openConnection();
-		String query  = "INSERT INTO Student (StudentId, firstName, lastName, grade1, grade2, grade3) VALUES (student.getStudentId, student.firstName, student.getLastName, student.getGrades[0], student.getGrades[1],student.getGrades[2] ";
+		String query = "INSERT INTO Student (StudentId, firstName, lastName, grade1, grade2, grade3) VALUES (student.getStudentId, student.firstName, student.getLastName, student.getGrades[0], student.getGrades[1],student.getGrades[2] ";
 		resultSet = statment.executeQuery(query);
-		closeConnection();		
+		closeConnection();
 	}
 
 	@Override
 	public void updateStudent(Student student) throws IOException, ClassNotFoundException, SQLException {
-
-		openConnection();
-		// Delete 
-		// ADD
-		closeConnection();
-
+		deleteStudent(student.getStudentId());
+		addStudent(student);
 	}
 
 	@Override
 	public Student getStudent(String studentId) throws IOException, ClassNotFoundException, SQLException {
 		openConnection();
-		String query ="SELECT * FROM Student WHERE StudentId=studentId";
+		String query = "SELECT * FROM Student WHERE StudentId=studentId";
 		resultSet = statment.executeQuery(query);
-		closeConnection();	
-		return null;      // return The data as Student object.
+		closeConnection();
+		String id = resultSet.getString("StudentId");
+		String firstName = resultSet.getString("StudentFirstName");
+		String lastName = resultSet.getString("StudentSecondName");
+		double[] grade = new double[3];
+		grade[0] = resultSet.getDouble(3);
+		grade[1] = resultSet.getDouble(4);
+		grade[2] = resultSet.getDouble(5);
+		return new Student(id,firstName,lastName,grade);
 	}
-
 }

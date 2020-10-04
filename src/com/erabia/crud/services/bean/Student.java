@@ -19,8 +19,8 @@ public class Student {
 		return studentId;
 	}
 
-	public void setId(String id) {
-		this.id = id;
+	public void setId(String studentId) {
+		this.studentId = studentId;
 	}
 
 	public String getFirstName() {
